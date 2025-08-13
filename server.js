@@ -15,15 +15,16 @@ app.use(express.static('public'));
 
 // Initialize database and engine
 let nl2sqlEngine;
+let dbSetup;
 
 async function initialize() {
   try {
     // Setup database
-    const dbSetup = new DatabaseSetup();
+    dbSetup = new DatabaseSetup();
     await dbSetup.setup();
     
-    // Initialize NL2SQL engine
-    nl2sqlEngine = new NL2SQLEngine();
+    // Initialize NL2SQL engine with database instance
+    nl2sqlEngine = new NL2SQLEngine(dbSetup);
     
     console.log('Server initialized successfully');
   } catch (error) {

@@ -3,21 +3,23 @@ const path = require('path');
 
 class DatabaseSetup {
   constructor() {
-    this.dbPath = path.join(__dirname, 'company_database.db');
+    // Use in-memory database for AWS Amplify deployment
+    this.dbPath = ':memory:';
+    this.db = null;
   }
 
   async setup() {
     return new Promise((resolve, reject) => {
-      const db = new sqlite3.Database(this.dbPath, (err) => {
+      this.db = new sqlite3.Database(this.dbPath, (err) => {
         if (err) {
           reject(err);
         } else {
           console.log('Connected to SQLite database.');
-          this.createTables(db)
-            .then(() => this.insertSampleData(db))
+          this.createTables(this.db)
+            .then(() => this.insertSampleData(this.db))
             .then(() => {
               console.log('Database setup complete!');
-              resolve(db);
+              resolve(this.db);
             })
             .catch(reject);
         }
@@ -281,6 +283,10 @@ class DatabaseSetup {
         }
       });
     });
+  }
+
+  getDatabase() {
+    return this.db;
   }
 }
 

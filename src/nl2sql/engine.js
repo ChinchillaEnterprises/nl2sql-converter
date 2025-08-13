@@ -2,8 +2,8 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
 class NL2SQLEngine {
-  constructor() {
-    this.dbPath = path.join(__dirname, '../database/company_database.db');
+  constructor(dbSetup) {
+    this.dbSetup = dbSetup;
     this.templates = this.initializeTemplates();
   }
 
@@ -455,17 +455,20 @@ class NL2SQLEngine {
 
   executeQuery(sql) {
     return new Promise((resolve, reject) => {
-      const db = new sqlite3.Database(this.dbPath);
+      const db = this.dbSetup.getDatabase();
+      
+      if (!db) {
+        reject(new Error('Database not initialized'));
+        return;
+      }
       
       db.all(sql, [], (err, rows) => {
         if (err) {
-          db.close();
           reject(err);
         } else {
           // Extract column names
           const columns = rows.length > 0 ? Object.keys(rows[0]) : [];
           
-          db.close();
           resolve({
             rows,
             columns
