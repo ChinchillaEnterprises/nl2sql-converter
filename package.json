@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "build": "echo 'No build required'",
+    "test": "echo 'No tests configured'"
   },
   "keywords": ["nl2sql", "natural-language", "sql", "database", "query"],
   "author": "Deepthi",

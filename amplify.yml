@@ -1,0 +1,22 @@
+version: 1
+backend:
+  phases:
+    # No backend build needed for this Node.js app
+    build:
+      commands:
+        - echo "No backend build required"
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - echo "No frontend build required - serving static files"
+  artifacts:
+    baseDirectory: /
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
