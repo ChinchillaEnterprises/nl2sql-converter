@@ -13,6 +13,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
+// Log all requests
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
+});
+
 // Initialize database and engine
 let nl2sqlEngine;
 let dbSetup;
@@ -36,6 +42,35 @@ async function initialize() {
 // API Routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Debug endpoint
+app.get('/api/debug', async (req, res) => {
+  try {
+    const debugInfo = {
+      serverRunning: true,
+      databaseInitialized: !!dbSetup && !!dbSetup.getDatabase(),
+      engineInitialized: !!nl2sqlEngine,
+      environment: {
+        NODE_ENV: process.env.NODE_ENV || 'development',
+        PORT: process.env.PORT || 3000
+      }
+    };
+    
+    // Try to get table count
+    if (nl2sqlEngine) {
+      try {
+        const result = await nl2sqlEngine.executeQuery("SELECT COUNT(*) as count FROM sqlite_master WHERE type='table'");
+        debugInfo.tableCount = result.rows[0].count;
+      } catch (e) {
+        debugInfo.dbError = e.message;
+      }
+    }
+    
+    res.json(debugInfo);
+  } catch (error) {
+    res.json({ error: error.message });
+  }
 });
 
 // Process natural language query
