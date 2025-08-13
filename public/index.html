@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NL2SQL Query Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🔍 Natural Language to SQL Translator</h1>
+            <p>Ask questions about your company data in plain English</p>
+        </header>
+
+        <!-- Query Input Section -->
+        <section class="query-section">
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    id="queryInput" 
+                    placeholder="e.g., Show me all employees in engineering department"
+                    autocomplete="off"
+                />
+                <button id="submitBtn" onclick="processQuery()">
+                    <span>Execute Query</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Quick Suggestions -->
+            <div class="suggestions" id="suggestions">
+                <span class="suggestion-label">Try:</span>
+                <div id="suggestionsList"></div>
+            </div>
+        </section>
+
+        <!-- SQL Display Section -->
+        <section id="sqlSection" class="sql-section hidden">
+            <div class="section-header">
+                <h3>Generated SQL Query</h3>
+                <button class="copy-btn" onclick="copySQL()">Copy SQL</button>
+            </div>
+            <pre id="sqlDisplay"></pre>
+        </section>
+
+        <!-- Results Section -->
+        <section id="resultsSection" class="results-section hidden">
+            <div class="section-header">
+                <h3>Query Results</h3>
+                <span id="rowCount" class="row-count"></span>
+            </div>
+            <div id="resultsTable" class="results-table"></div>
+        </section>
+
+        <!-- Test Cases Section -->
+        <section class="test-cases-section">
+            <h3>📚 Example Queries</h3>
+            <div id="testCases" class="test-cases-grid"></div>
+        </section>
+
+        <!-- Schema Info -->
+        <section class="schema-section">
+            <h3>📊 Database Schema</h3>
+            <button class="toggle-btn" onclick="toggleSchema()">Show/Hide Tables</button>
+            <div id="schemaInfo" class="schema-info hidden"></div>
+        </section>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
