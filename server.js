@@ -6,7 +6,7 @@ const DatabaseSetup = require('./src/database/setupDatabase');
 const NL2SQLEngine = require('./src/nl2sql/engine');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
@@ -153,8 +153,8 @@ app.get('/api/test-cases', (req, res) => {
 
 // Start server
 initialize().then(() => {
-  app.listen(PORT, () => {
-    console.log(`\n🚀 NL2SQL Server running at http://localhost:${PORT}`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n🚀 NL2SQL Server running on port ${PORT}`);
     console.log('📊 Database initialized with sample data');
     console.log('🔍 Ready to process natural language queries\n');
   });

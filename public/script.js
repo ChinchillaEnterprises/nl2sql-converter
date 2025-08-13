@@ -1,5 +1,5 @@
-// API Base URL
-const API_BASE = 'http://localhost:3000/api';
+// API Base URL - Use relative URL for deployment
+const API_BASE = '/api';
 
 // DOM Elements
 const queryInput = document.getElementById('queryInput');
